@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="smoketests.smoke_test"
+    errors="0" failures="0" hostname="" id="" package="smoketests" skipped="0"
+    tests="1" time="6.386" timestamp="Fri, 09 Feb 2018 19:58:45 GMT">
+  
+    <testcase name="Visit Google" classname="smoketests.smoke_test" time="6.386" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

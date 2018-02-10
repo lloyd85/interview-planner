@@ -1,0 +1,9 @@
+.input-field {
+  color: red;
+
+  &.is-invalid {
+    .input {
+      border: 1px red solid;
+    }
+  }
+}
