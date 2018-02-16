@@ -26,6 +26,22 @@ describe('Shared Helpers: FormValidator', () => {
       expect(validation).toBeTruthy();
     });
 
+   it('existValues() should return true when all values are longer then 0', () => {
+      const values = ['value', 'value2'];
+      const validator = new FormValidator();
+      const validation = validator.existValues(values);
+
+      expect(validation).toBeTruthy();
+    });
+
+   it('existValues() should return false when not all values are longer then 0', () => {
+      const values = ['value', ''];
+      const validator = new FormValidator();
+      const validation = validator.existValues(values);
+
+      expect(validation).toBeFalsy();
+    });
+
     it('validate() should return true when all values are valid and have an array of 3 pattern lengths', () => {
       const email = 'me@test.com';
       const chars = 'Hello World';

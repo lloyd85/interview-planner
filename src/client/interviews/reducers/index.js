@@ -1,4 +1,4 @@
-import Immutable from 'seamless-immutable';
+import Immutable, { merge } from 'seamless-immutable';
 import { actionTypes } from '../constants';
 
 export const initialState = Immutable({
@@ -32,80 +32,38 @@ const {
 const InterviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_INTERVIEWS_ATTEMPT:
-      return state
-        .set('isLoading', true)
-        .set('message', '')
-        .set('data', []);
+      return merge(initialState, { isLoading: true });
     case FETCH_INTERVIEWS_SUCCESS:
-      return state
-        .set('isLoading', false)
-        .set('data', action.payload);
+      return merge(initialState, { data: action.payload });
     case FETCH_INTERVIEWS_FAILURE:
-      return state
-        .set('isLoading', false)
-        .set('message', 'Interview\'s could not be loaded')
-        .set('data', []);
+      return merge(initialState, { message: 'Interviews could not be loaded' });
 
     case FETCH_INTERVIEW_ATTEMPT:
-      return state
-        .set('isLoading', true)
-        .set('message', '')
-        .set('data', {});
+      return merge(initialState, { isLoading: true });
     case FETCH_INTERVIEW_SUCCESS:
-      return state
-        .set('isLoading', false)
-        .set('data', action.payload);
+      return merge(initialState, { data: action.payload });
     case FETCH_INTERVIEW_FAILURE:
-      return state
-        .set('isLoading', false)
-        .set('message', 'Interview could not be loaded')
-        .set('data', {});
+      return merge(initialState, { message: 'Interview could not be loaded' });
 
     case UPDATE_INTERVIEW_ATTEMPT:
-      return state
-        .set('isLoading', true)
-        .set('message', '')
-        .set('data', {});
+      return merge(initialState, { isLoading: true });
     case UPDATE_INTERVIEW_SUCCESS:
-      return state
-        .set('isLoading', false)
-        .set('data', action.payload);
+      return merge(initialState, { data: action.payload });
     case UPDATE_INTERVIEW_FAILURE:
-      return state
-        .set('isLoading', false)
-        .set('message', 'Interview could not be updated')
-        .set('data', {});
+      return merge(initialState, { message: 'Interview could not be updated' });
 
     case ADD_INTERVIEW_ATTEMPT:
-      return state
-        .set('isLoading', true)
-        .set('message', '')
-        .set('data', []);
+      return merge(initialState, { isLoading: true });
     case ADD_INTERVIEW_SUCCESS:
-      return state
-        .set('isLoading', false)
-        .set('data', action.payload);
+      return merge(initialState, { message: action.payload });
     case ADD_INTERVIEW_FAILURE:
-      return state
-        .set('isLoading', false)
-        .set('message', 'Interview could not be updated')
-        .set('data', []);
-
+      return merge(initialState, { message: 'Interview could not be added' });
     case REMOVE_INTERVIEW_ATTEMPT:
-      return state
-        .set('isLoading', true)
-        .set('message', '')
-        .set('data', []);
+      return merge(initialState, { isLoading: true });
     case REMOVE_INTERVIEW_SUCCESS:
-      return state
-        .set('isLoading', false)
-        .set('data', action.payload);
+      return merge(initialState, { message: action.payload });
     case REMOVE_INTERVIEW_FAILURE:
-      return state
-        .set('isLoading', false)
-        .set('message', 'Interview could not be deleted')
-        .set('data', []);
-
+      return merge(initialState, { message: 'Interview could not be removed' });
     default:
       return state;
   }

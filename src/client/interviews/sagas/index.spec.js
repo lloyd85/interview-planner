@@ -1,6 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 import InterviewsSagas from './';
 import {
+  fetchInterviews,
   fetchInterviewsSuccess,
   fetchInterviewsFailure,
   fetchInterview,
@@ -31,7 +32,11 @@ describe('Sagas: Interviews', () => {
     });
 
     it('if the API call is successful it should dispatch a success action', () => {
-      const successResponse = { data: { results: [{ role: 'Role', company: 'Company' }] } };
+      const successResponse = { data: { results: [
+            { _id: '123', role: 'Developer', company: 'Google' },
+            { _id: '456', role: 'Teamlead', company: 'Facebook' },
+            { _id: '789', role: 'Manager', company: 'Twitter' },
+          ] } };
       const results = successResponse.data.results;
       const expected = put(fetchInterviewsSuccess(results));
       const actual = gen.next(successResponse).value;
@@ -60,7 +65,7 @@ describe('Sagas: Interviews', () => {
     });
 
     it('if the API call is successful it should dispatch a success action', () => {
-      const successResponse = { data: { results: { id: '123', role: 'Developer', company: 'Google' } } };
+      const successResponse = { data: { results: { _id: '123', role: 'Developer', company: 'Google' } } };
       const results = successResponse.data.results;
       const expected = put(fetchInterviewSuccess(results));
       const actual = gen.next(successResponse).value;
@@ -92,7 +97,7 @@ describe('Sagas: Interviews', () => {
     it('if the API call is successful it should dispatch a success action', () => {
       const successResponse = {
         data: {
-          results: { id: '789', role: 'Developer', company: 'Instagram' },
+          results: { _id: '789', role: 'Developer', company: 'Instagram' },
         },
       };
       const results = successResponse.data.results;
@@ -111,7 +116,7 @@ describe('Sagas: Interviews', () => {
   });
 
   describe('addInterview()', () => {
-    const body = { id: '101', role: 'Tester', company: 'LinkedIn' };
+    const body = { _id: '101', role: 'Tester', company: 'LinkedIn' };
     const action = addInterview(body);
     const gen = InterviewsSagas().addInterview(action);
 
@@ -123,18 +128,8 @@ describe('Sagas: Interviews', () => {
     });
 
     it('if the API call is successful it should dispatch a success action', () => {
-      const successResponse = {
-        data: {
-          results: [
-            { id: '123', role: 'Developer', company: 'Google' },
-            { id: '456', role: 'Teamlead', company: 'Facebook' },
-            { id: '789', role: 'Developer', company: 'Instagram' },
-            { id: '101', role: 'Tester', company: 'LinkedIn' },
-          ],
-        },
-      };
-      const results = successResponse.data.results;
-      const expected = put(addInterviewSuccess(results));
+      const successResponse = { data: { message: 'Interview has been added' } };
+      const expected = put(addInterviewSuccess('Interview has been added'));
       const actual = gen.next(successResponse).value;
 
       expect(actual).toEqual(expected);
@@ -161,16 +156,8 @@ describe('Sagas: Interviews', () => {
     });
 
     it('if the API call is successful it should dispatch a success action', () => {
-      const successResponse = {
-        data: {
-          results: [
-            { id: '456', role: 'Teamlead', company: 'Facebook' },
-            { id: '789', role: 'Developer', company: 'Instagram' },
-          ],
-        },
-      };
-      const results = successResponse.data.results;
-      const expected = put(removeInterviewSuccess(results));
+      const successResponse = { data: { message: 'Interview has been removed' } };
+      const expected = put(removeInterviewSuccess('Interview has been removed'));
       const actual = gen.next(successResponse).value;
 
       expect(actual).toEqual(expected);

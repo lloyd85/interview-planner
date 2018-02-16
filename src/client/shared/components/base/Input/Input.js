@@ -32,41 +32,35 @@ class Input extends Component {
 
     const { value, isValid } = this.props;
 
-    this.state = { value, isValid };
+    this.state = { value, isValid, isValueEmpty: false };
     this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { required } = this.props;
     const { isValid, value } = nextProps;
 
     if (value.length > 0) {
       this.setState({ isValid });
     }
-
-    if (isValid && required) {
-      this.setState({ isValid: value.length > 0 });
-    }
   }
 
   onChange({ target }) {
-    const { isValid, required } = this.props;
     const { value } = target;
 
-    if (value.length > 0) {
-      this.setState({ value, isValid });
-    }
+    this.setState({ value, isValueEmpty: false });
 
-    if (isValid && required) {
-      this.setState({ value, isValid: value.length > 0 });
-    }
-
-    this.setState({ value });
     this.props.onChange({ target });
   }
 
+  onBlur({ target }) {
+    if (target.value.length === 0 && this.props.required) {
+      this.setState({ isValueEmpty: true });
+    }
+  }
+
   render() {
-    const { value, isValid } = this.state;
+    const { value, isValid, isValueEmpty } = this.state;
     const {
       message,
       type,
@@ -74,7 +68,7 @@ class Input extends Component {
       disabled,
       placeholder,
     } = this.props;
-    const isValidClass = isValid ? 'is-valid' : 'is-invalid';
+    const isValidClass = (value.length === 0 || isValid) ? 'is-valid' : 'is-invalid';
     const isDisabledClass = disabled ? 'is-disabled' : '';
     const classes = `input ${isDisabledClass}`;
 
@@ -85,13 +79,16 @@ class Input extends Component {
           className={classes}
           value={value}
           onChange={this.onChange}
+          onBlur={this.onBlur}
           type={type}
           disabled={disabled}
           placeholder={placeholder}
         />
-        {
-          (message.length > 0 && !isValid) &&
+        {(message.length > 0 && !isValid && value.length > 0) &&
           <span className="input-field-message">{message}</span>
+        }
+        {isValueEmpty &&
+          <span className="input-field-message">Field is required</span>
         }
       </div>
     );

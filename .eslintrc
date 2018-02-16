@@ -8,13 +8,17 @@
     "__PRODUCTION__": true,
     "__CLIENT__": true,
     "__SERVER__": true,
-    "socket": true,
-    "webpackIsomorphicTools": true
+    "socket": true
   },
   "plugins": [
     "react"
   ],
   "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "config/webpack.dev.config.js"
+      }
+    }
   },
   "rules": {
     "no-shadow": 0,

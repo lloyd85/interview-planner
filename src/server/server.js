@@ -6,7 +6,8 @@ import bodyParser from 'body-parser';
 import { interviewRoutes, interviewMockRoutes } from './interview/InterviewRoutes';
 
 const app = new Express();
-const port = process.env.PORT || 3001;
+const localPort = process.env.NODE_ENV === 'testing' ? 3005 : 3001;
+const port = process.env.PORT || localPort;
 const apiVersion = '1';
 
 app.use(cookieParser());

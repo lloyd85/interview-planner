@@ -1,7 +1,7 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 
-import { API } from '../../shared/helpers';
 import {
+  fetchInterviews as getInterviews,
   fetchInterviewsSuccess,
   fetchInterviewsFailure,
   fetchInterviewSuccess,
@@ -17,6 +17,7 @@ import {
 import { actionTypes } from '../constants';
 import service from '../services';
 
+
 export default () => {
   function* fetchInterviews() {
     try {
@@ -24,8 +25,8 @@ export default () => {
       const { data: { results } } = response;
 
       yield put(fetchInterviewsSuccess(results));
-    } catch (e) {
-      yield put(fetchInterviewsFailure(e));
+    } catch (error) {
+      yield put(fetchInterviewsFailure(error));
     }
   }
 
@@ -36,8 +37,8 @@ export default () => {
       const { data: { results } } = response;
 
       yield put(fetchInterviewSuccess(results));
-    } catch (e) {
-      yield put(fetchInterviewFailure(e));
+    } catch (error) {
+      yield put(fetchInterviewFailure(error));
     }
   }
   function* updateInterview({ id, body }) {
@@ -46,30 +47,32 @@ export default () => {
       const { data: { results } } = response;
 
       yield put(updateInterviewSuccess(results));
-    } catch (e) {
-      yield put(updateInterviewFailure(e));
+    } catch (error) {
+      yield put(updateInterviewFailure(error));
     }
   }
 
   function* addInterview({ body }) {
     try {
       const response = yield call(service.addInterview, body);
-      const { data: { results } } = response;
+      const { data: { message } } = response;
 
-      yield put(addInterviewSuccess(results));
-    } catch (e) {
-      yield put(addInterviewFailure(e));
+      yield put(addInterviewSuccess(message));
+      yield put(getInterviews());
+    } catch (error) {
+      yield put(addInterviewFailure(error));
     }
   }
 
   function* removeInterview({ id }) {
     try {
       const response = yield call(service.removeInterview, id);
-      const { data: { results } } = response;
+      const { data: { message } } = response;
 
-      yield put(removeInterviewSuccess(results));
-    } catch (e) {
-      yield put(removeInterviewFailure(e));
+      yield put(removeInterviewSuccess(message));
+      yield put(getInterviews());
+    } catch (error) {
+      yield put(removeInterviewFailure(error));
     }
   }
 

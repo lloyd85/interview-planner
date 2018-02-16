@@ -17,6 +17,11 @@ const message = createSelector(
   interviewsState => interviewsState.message,
 );
 
+const status = createSelector(
+  [interviewsSelector],
+  interviewsState => interviewsState.status,
+);
+
 const formValues = createSelector(
   [interviewsSelector],
   interviewsState => interviewsState.formValues,
@@ -26,5 +31,6 @@ export default createStructuredSelector({
   data,
   isLoading,
   message,
+  status,
   formValues,
 });

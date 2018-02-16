@@ -38,26 +38,32 @@ describe('shared/components/Input', () => {
   });
 
   test('should render an .is-invalid class when isValid prop is FALSE', () => {
-    const wrapper = shallow(<Input isValid={false} onChange={() => null} />);
+    const wrapper = shallow(<Input value="Text" isValid={false} onChange={() => null} />);
 
     expect(wrapper.find('.is-invalid')).toHaveLength(1);
   });
 
   test('should render a message when message prop is set and isValid prop is FALSE', () => {
-    const wrapper = shallow(<Input isValid={false} message="Not valid" onChange={() => null} />);
+    const wrapper = shallow(<Input value="Text" isValid={false} message="Not valid" onChange={() => null} />);
 
     expect(wrapper.find('.input-field-message')).toHaveLength(1);
     expect(wrapper.find('.input-field-message').text()).toEqual('Not valid');
   });
 
   test('should not render a message when message prop is not set and isValid prop is FALSE', () => {
-    const wrapper = shallow(<Input isValid={false} onChange={() => null} />);
+    const wrapper = shallow(<Input value="Text" isValid={false} onChange={() => null} />);
 
     expect(wrapper.find('.input-field-message')).toHaveLength(0);
   });
 
   test('should not render a message when message prop is set and isValid prop is TRUE', () => {
-    const wrapper = shallow(<Input isValid message="Not valid" onChange={() => null} />);
+    const wrapper = shallow(<Input value="Text" isValid message="Not valid" onChange={() => null} />);
+
+    expect(wrapper.find('.input-field-message')).toHaveLength(0);
+  });
+
+  test('should not render a message when required prop is set to TRUE and value is empty', () => {
+    const wrapper = shallow(<Input value="" required message="Not valid" onChange={() => null} />);
 
     expect(wrapper.find('.input-field-message')).toHaveLength(0);
   });

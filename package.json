@@ -6,14 +6,17 @@
   "author": "Lloyd Ntim <me@lloydntim.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --config config/webpack.config.js",
-    "e2e": "./node_modules/.bin/nightwatch",
-    "test": "jest",
+    "start": "npm install && npm run build:prod",
+    "start:mongo": "node adminMongo/app.js",
+    "dev": "npm run build:dev",
+    "server": "npm run build:server",
     "build:dev": "NODE_ENV=development webpack-dev-server --config config/webpack.dev.config.js --port 3002",
     "build:prod": "NODE_ENV=production webpack --config config/webpack.prod.config.js",
-    "dev:server": "nodemon ./src/server/index.js --exec babel-node --presets @babel/preset-env,@babel/preset-react",
-    "test:server": "./node_modules/mocha/bin/mocha --require @babel/register --require @babel/polyfill ./src/server/tests/test-server.js",
-    "start": "npm install && npm run build"
+    "build:server": "NODE_ENV=development nodemon ./src/server/index.js --exec babel-node --presets @babel/preset-env,@babel/preset-react",
+    "test": "npm run test:dev",
+    "test:dev": "jest",
+    "test:server": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --require @babel/register --require @babel/polyfill ./src/server/tests/test-server.js",
+    "test:e2e": "./node_modules/.bin/nightwatch"
   },
   "jest": {
     "unmockedModulePathPatterns": [
@@ -91,6 +94,7 @@
     "eslint": "^4.16.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
+    "eslint-import-resolver-webpack": "^0.8.4",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",

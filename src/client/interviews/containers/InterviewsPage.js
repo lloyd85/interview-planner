@@ -1,69 +1,68 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { string, array, bool, func, object, oneOfType } from 'prop-types';
+import { oneOfType, object, array, bool, func } from 'prop-types';
 
-import InterviewsSelectors from '../selectors';
+import { ContentLoader } from 'shared/containers';
+import { PageBaseLayout } from 'shared/layouts';
+
 import InterviewsActions from '../actions';
+import InterviewsSelectors from '../selectors';
 
-// import { InterviewsForm } from 'interviews/components';
+import { InterviewList, InterviewsAddForm } from '../components';
 
 @connect(InterviewsSelectors, InterviewsActions)
-class InterviewsPage extends Component {
+class InterviewPage extends Component {
   static propTypes = {
     // props
     data: oneOfType([object, array]).isRequired,
-    message: string.isRequired,
     isLoading: bool.isRequired,
-    // formValues: object.isRequired,
-    match: object.isRequired,
 
+    // methods
     fetchInterviews: func.isRequired,
-    // addInterview: func.isRequired,
+    addInterview: func.isRequired,
+    removeInterview: func.isRequired,
   };
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      role: '',
+      company: '',
+    };
+  }
+
+  componentWillMount() {
     this.props.fetchInterviews();
   }
 
+  onInputChange(field) {
+    return ({ target: { value } }) => {
+      this.setState({ [field]: value });
+    };
+  }
+
+  addInterview() {
+    this.setState({ role: '', company: '' });
+    this.props.addInterview(this.state);
+  }
+
   render() {
-    const {
-      isLoading,
-      data,
-      message,
-      match: { url },
-      /* , addInterview, formValues */
-    } = this.props;
-    const existsInterviews = data.length > 0;
+    const { data, isLoading, removeInterview } = this.props;
 
     return (
-      <div>
-        <h1>Interview List</h1>
-        {/* <InterviewsForm values={formValues} onSubmit={addInterview} /> */}
-        <div>
-          { isLoading ? <p>Is loading...</p> :
-          <div>
-            { existsInterviews ? (
-              <ul>
-                {
-                  data.map((interview, i) => (
-                    <li key={i}>
-                      <Link to={`${url}/${interview.id}`}>
-                        {interview.role}
-                      </Link>
-                    </li>
-                  ))
-                }
-              </ul>
-            ) : <p>No interviews</p>
-            }
-          </div>
-          }
-          { message !== '' && <p>Message: { message }</p> }
-        </div>
-      </div>
+      <PageBaseLayout name="interviews">
+        <InterviewsAddForm
+          values={this.state}
+          onInputChange={this.onInputChange.bind(this)}
+          onSubmit={this.addInterview.bind(this)}
+        />
+        <ContentLoader isLoading={isLoading} contentLoaderText="Is Loading...">
+          <InterviewList data={data} removeInterview={removeInterview} />
+        </ContentLoader>
+      </PageBaseLayout>
     );
   }
 }
 
-export default withRouter(InterviewsPage);
+export default InterviewPage;

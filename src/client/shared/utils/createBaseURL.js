@@ -1,4 +1,4 @@
-const createBaseURL = (apiName, isMock = { isMock: true }) => {
+const createBaseURL = (apiName, isMock = { isMock: false }) => {
   const port = 3001;
   const location = 'localhost';
   const baseURL = `http://${location}:${port}`;

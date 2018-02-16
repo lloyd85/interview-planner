@@ -9,6 +9,12 @@ module.exports = {
     'webpack-dev-server/client?http://localhost:3002',
     '../src/client/index.js',
   ],
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      shared: resolve(__dirname, '../src/client/shared/'),
+    },
+  },
   context: resolve(__dirname, '../src'),
   output: {
     path: resolve(__dirname, '../dist'),
@@ -75,10 +81,5 @@ module.exports = {
     'react/addons': true,
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
-  },
-  resolve: {
-    alias: {
-      shared: resolve(__dirname, './src/client/shared/'),
-    },
   },
 };
