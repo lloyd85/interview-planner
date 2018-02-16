@@ -5,3 +5,6 @@ dist
 .idea
 bin
 adminMongo
+test-integration/reports
+test-integration/screenshots
+ src/test-integration/log

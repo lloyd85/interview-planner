@@ -13,9 +13,9 @@
     "build:dev": "NODE_ENV=development webpack-dev-server --config config/webpack.dev.config.js --port 3002",
     "build:prod": "NODE_ENV=production webpack --config config/webpack.prod.config.js",
     "build:server": "NODE_ENV=development nodemon ./src/server/index.js --exec babel-node --presets @babel/preset-env,@babel/preset-react",
-    "test": "npm run test:dev",
+    "test": "npm run test:dev && npm run test:server && npm run test:e2e",
     "test:dev": "jest",
-    "test:server": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --require @babel/register --require @babel/polyfill ./src/server/tests/test-server.js",
+    "test:server": "NODE_ENV=testing ./node_modules/mocha/bin/mocha --require @babel/register --require @babel/polyfill ./src/server/tests/test-server.js --exit",
     "test:e2e": "./node_modules/.bin/nightwatch"
   },
   "jest": {
