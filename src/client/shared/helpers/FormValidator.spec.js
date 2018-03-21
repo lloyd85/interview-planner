@@ -26,20 +26,30 @@ describe('Shared Helpers: FormValidator', () => {
       expect(validation).toBeTruthy();
     });
 
+   it('addRequiredValues() should add values to internal value array property', () => {
+      const values = ['value', 'value2'];
+      const validator = new FormValidator();
+
+      validator.addRequiredValues(values);
+
+      expect(validator.values).toHaveLength(2);
+    });
    it('existValues() should return true when all values are longer then 0', () => {
       const values = ['value', 'value2'];
       const validator = new FormValidator();
-      const validation = validator.existValues(values);
 
-      expect(validation).toBeTruthy();
+      validator.addRequiredValues(values);
+
+      expect(validator.existValues()).toBeTruthy();
     });
 
    it('existValues() should return false when not all values are longer then 0', () => {
       const values = ['value', ''];
       const validator = new FormValidator();
-      const validation = validator.existValues(values);
 
-      expect(validation).toBeFalsy();
+      validator.addRequiredValues(values);
+
+     expect(validator.existValues()).toBeFalsy();
     });
 
     it('validate() should return true when all values are valid and have an array of 3 pattern lengths', () => {

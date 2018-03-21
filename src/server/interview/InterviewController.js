@@ -3,9 +3,9 @@ import InterviewModel from './InterviewModel';
 export const getInterviews = async (req, res) => {
   try {
     const interviews = await InterviewModel.find({});
-    res.status(200).json({results: interviews});
+    res.status(200).json({ results: interviews });
   } catch (error) {
-    res.status(500).json({error: 'Could not retrieve Interviews'});
+    res.status(500).json({ error: 'Could not retrieve Interviews' });
   }
 };
 
@@ -18,10 +18,10 @@ export const getInterview = async (req, res) => {
     if (!interview) {
       return res.status(404).json({ error: new Error(`Interview with id ${id} not found`) });
     } else {
-      res.status(200).json({ message: 'Interview successfully updated', results: interview });
+      res.status(200).json({ results: interview });
     }
   } catch (error) {
-    res.status(500).json({ error: new Error(`Unknown server error when trying to delete Interview with id ${interviewId}`)});
+    res.status(500).json({ error: new Error(`Unknown server error when trying to retrieve Interview with id ${id}`)});
   }
 };
 
@@ -85,7 +85,7 @@ export const getMockInterviews = (req, res) => {
 
 export const getMockInterview = (req, res) => {
   const { params: { id } } = req;
-  const results = mockResults.filter((result) => result.id === id)[0];
+  const results = mockResults.filter((result) => result._id === id)[0];
 
   if (results.length === 0) {
     return res.status(404).json({ error: new Error(`Interview with id ${id} not found`) });

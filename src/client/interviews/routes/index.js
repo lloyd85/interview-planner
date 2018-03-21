@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
+import { PrivateRoute } from '../../auth/routes';
 import { InterviewsPage, InterviewPage } from '../containers';
 
 export default () => (
   <Switch>
-    <Route exact path="/" component={InterviewsPage} />
-    <Route path="/interviews/:id" component={InterviewPage} />
-    <Route path="/interviews" component={InterviewsPage} />
+    <PrivateRoute path="/interviews/:id" component={InterviewPage} />
+    <PrivateRoute path="/interviews" component={InterviewsPage} />
   </Switch>
 );

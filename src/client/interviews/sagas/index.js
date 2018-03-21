@@ -1,3 +1,4 @@
+import { delay } from 'redux-saga';
 import { put, call, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -21,6 +22,7 @@ import service from '../services';
 export default () => {
   function* fetchInterviews() {
     try {
+      yield call(delay, 5000);
       const response = yield call(service.fetchInterviews);
       const { data: { results } } = response;
 

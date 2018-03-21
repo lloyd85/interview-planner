@@ -5,10 +5,6 @@ export const initialState = Immutable({
   isLoading: false,
   message: '',
   data: [],
-  formValues: {
-    role: '',
-    company: '',
-  },
 });
 
 const {
@@ -58,6 +54,7 @@ const InterviewsReducer = (state = initialState, action) => {
       return merge(initialState, { message: action.payload });
     case ADD_INTERVIEW_FAILURE:
       return merge(initialState, { message: 'Interview could not be added' });
+
     case REMOVE_INTERVIEW_ATTEMPT:
       return merge(initialState, { isLoading: true });
     case REMOVE_INTERVIEW_SUCCESS:

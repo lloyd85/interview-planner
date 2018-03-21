@@ -24,39 +24,39 @@ describe('Interviews', () => {
     chai.request(server)
       .get('/api/v1/interviews')
       .end((error, res) => {
-        done();
         res.should.have.status(200);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.data.should.be.a('array');
-        res.body.data[0].should.have.property('_id');
-        res.body.data[0].should.have.property('role');
-        res.body.data[0].should.have.property('company');
-        res.body.data[0].role.should.equal('Developer');
-        res.body.data[0].company.should.equal('Coca Cola');
+        res.body.results.should.be.a('array');
+        res.body.results[0].should.have.property('_id');
+        res.body.results[0].should.have.property('role');
+        res.body.results[0].should.have.property('company');
+        res.body.results[0].role.should.equal('Developer');
+        res.body.results[0].company.should.equal('Coca Cola');
+        done();
       });
   });
 
   it('should list a SINGLE interview on /api/v1/interviews/<id> GET', (done) => {
-    const newInterview = new InterviewModel({
-      role: 'Developer',
-      company: 'Mexxo',
-    });
+    const newInterview = {
+      'role': 'Developer',
+      'company': 'Coca Cola',
+    };
 
-    newInterview.save((err, data) => {
-      done();
+    InterviewModel.create(newInterview, (err, data) => {
       chai.request(server)
-        .get(`/interviews/${data.id}`)
+        .get(`/api/v1/interviews/${data._id}`)
         .end((error, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          res.body.data.should.be.a('object');
-          res.body.data.should.have.property('_id');
-          res.body.data.should.have.property('company');
-          res.body.data.should.have.property('role');
-          res.body.data.role.should.equal('Developer');
-          res.body.data.company.should.equal('Coca Cola');
-          res.body.data._id.should.equal(data.id);
+          res.body.results.should.be.a('object');
+          res.body.results.should.have.property('_id');
+          res.body.results.should.have.property('company');
+          res.body.results.should.have.property('role');
+          res.body.results.role.should.equal('Developer');
+          res.body.results.company.should.equal('Coca Cola');
+          res.body.results._id.should.contain(data._id);
+          done();
         });
     });
   });
@@ -79,36 +79,41 @@ describe('Interviews', () => {
     chai.request(server)
       .get('/api/v1/interviews')
       .end((err, res) => {
-        done();
         chai.request(server)
-          .put(`/api/v1/interviews/${res.body.data[0]._id}`)
+          .put(`/api/v1/interviews/${res.body.results[0]._id}`)
           .send({'role': 'Tester'})
           .end((error, response) => {
             response.should.have.status(200);
             response.should.be.json;
             response.body.should.be.a('object');
-            response.body.should.have.property('data');
-            response.body.data.should.be.a('object');
-            response.body.data.should.have.property('role');
-            response.body.data.should.have.property('_id');
-            response.body.data.name.should.equal('Tester');
+            response.body.should.have.property('results');
+            response.body.results.should.be.a('object');
+            response.body.results.should.have.property('role');
+            response.body.results.should.have.property('_id');
+            response.body.results.role.should.equal('Tester');
+            done();
           });
       });
   });
 
   it('should delete a SINGLE interview on /api/v1/interviews/<id> DELETE', (done) => {
-    chai.request(server)
-      .get('/api/v1/interviews')
-      .end((error, res) => {
-        done();
-        chai.request(server)
-          .delete(`/api/v1/interviews/${res.body.data[0]._id}`)
-          .end((error, response) => {
-            response.should.have.status(200);
-            response.should.be.json;
-            response.body.should.be.a('object');
-            response.body.should.have.property('message');
-          });
+    const newInterviewData = {
+      role: 'Developer',
+      company: 'Coca Cola',
+    };
+
+    const newInterview = InterviewModel(newInterviewData);
+
+    newInterview.save(newInterview, (err, data) => {
+      chai.request(server)
+        .del(`/api/v1/interviews/${data._id}`)
+        .end((error, response) => {
+          response.should.have.status(204);
+          response.should.be.json;
+          response.message.should.be.a('string');
+          response.body.should.have.property('message');
+          done();
+        });
       });
     InterviewModel.collection.drop();
   });

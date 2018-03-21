@@ -10,6 +10,12 @@ module.exports = {
     path: resolve(__dirname, '../dist'),
     filename: '[name].bundle.js',
   },
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      shared: resolve(__dirname, '../src/client/shared/'),
+    },
+  },
   module: {
     rules: [
       {
@@ -47,24 +53,19 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin('dist', { root: resolve(__dirname, '../') }),
+    // new CleanWebpackPlugin('dist', { root: resolve(__dirname, '../') }),
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, '../src/index.html'),
+      template: resolve(__dirname, '../src/client/index.html'),
       filename: 'index.html',
       inject: 'body',
     }),
     new UglifyJSPlugin({
-      compress: {
-        screw_ie8: true,
-        warnings: false,
-        unused: true,
-        dead_code: true,
+      uglifyOptions: {
+        ecma: 7,
+        warnings: true,
       },
-      output: {
-        comments: false,
-      },
-      sourceMap: false,
     }),
+    // new webpack.LoaderOptionsPlugin({ options: {} }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
@@ -72,9 +73,9 @@ module.exports = {
       }
     })
   ],
-  externals: {
+  /*externals: {
     'react/addons': true,
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
-  },
+  },*/
 };

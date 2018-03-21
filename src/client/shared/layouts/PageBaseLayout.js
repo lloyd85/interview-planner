@@ -1,15 +1,17 @@
 import React from 'react';
 import { node, string, oneOfType, arrayOf } from 'prop-types';
 
+import PageWrapper from './PageWrapper';
+import ContentWrapper from './ContentWrapper';
 import { Navigation } from '../components';
 
 const PageBaseLayout = ({ name, children }) => (
-  <div className={`page page-name-${name}`}>
+  <PageWrapper name={name}>
     <Navigation />
-    <div className="content">
+    <ContentWrapper>
       {children}
-    </div>
-  </div>
+    </ContentWrapper>
+  </PageWrapper>
 );
 
 PageBaseLayout.propTypes = {

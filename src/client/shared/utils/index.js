@@ -1,5 +1,3 @@
 import createBaseURL from './createBaseURL';
 
-export {
-  createBaseURL,
-};
+export { createBaseURL };

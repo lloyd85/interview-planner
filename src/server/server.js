@@ -3,6 +3,8 @@ import http from 'http';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
+import { userRoutes, userMockRoutes } from './user/UserRoutes';
+import { authRoutes, authMockRoutes } from './auth/AuthRoutes';
 import { interviewRoutes, interviewMockRoutes } from './interview/InterviewRoutes';
 
 const app = new Express();
@@ -12,10 +14,10 @@ const apiVersion = '1';
 
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Add headers
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
 
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
@@ -24,7 +26,7 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
 
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
@@ -34,8 +36,12 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(`/api/v${apiVersion}/`, userRoutes);
+app.use(`/api/v${apiVersion}/`, authRoutes);
 app.use(`/api/v${apiVersion}/`, interviewRoutes);
 app.use(`/mock-api/v${apiVersion}/`, interviewMockRoutes);
+app.use(`/mock-api/v${apiVersion}/`, userMockRoutes);
+app.use(`/mock-api/v${apiVersion}/`, authMockRoutes);
 
 const server = http.createServer(app);
 

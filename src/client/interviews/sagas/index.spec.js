@@ -22,10 +22,12 @@ import service from '../services';
 
 describe('Sagas: Interviews', () => {
   describe('fetchInterviews()', () => {
-    const gen = InterviewsSagas().fetchInterviews();
+    const action = fetchInterviews;
+    const gen = InterviewsSagas().fetchInterviews(action);
 
     it('should make a call to API method fetchInterviews()', () => {
       const expected = call(service.fetchInterviews);
+      gen.next();
       const actual = gen.next().value;
 
       expect(actual).toEqual(expected);

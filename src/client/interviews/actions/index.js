@@ -96,7 +96,7 @@ export const removeInterviewFailure = error => ({
 export default {
   fetchInterviews,
   fetchInterview,
+  addInterview,
   updateInterview,
   removeInterview,
-  addInterview,
 };

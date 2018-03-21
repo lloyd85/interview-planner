@@ -1,8 +1,4 @@
 import Express from 'express';
-
-const interviewRoutes = Express.Router();
-const interviewMockRoutes = Express.Router();
-
 import {
   getInterviews,
   getInterview,
@@ -15,17 +11,21 @@ import {
   updateMockInterview,
   removeMockInterview,
 } from './InterviewController';
+import { isAuthenticated } from '../middleware';
 
-interviewRoutes.get('/interviews', getInterviews);
+const interviewRoutes = Express.Router();
+const interviewMockRoutes = Express.Router();
+
+interviewRoutes.get('/interviews', isAuthenticated, getInterviews);
 interviewRoutes.get('/interviews/:id', getInterview);
 interviewRoutes.post('/interviews', addInterview);
 interviewRoutes.put('/interviews/:id', updateInterview);
 interviewRoutes.delete('/interviews/:id', removeInterview);
 
-interviewMockRoutes.get('/interviews', getMockInterviews);
-interviewMockRoutes.get('/interviews/:id', getMockInterview);
-interviewMockRoutes.post('/interviews', addMockInterview);
-interviewMockRoutes.put('/interviews/:id', updateMockInterview);
-interviewMockRoutes.delete('/interviews/:id', removeMockInterview);
+interviewMockRoutes.get('/interviews', isAuthenticated, getMockInterviews);
+interviewMockRoutes.get('/interviews/:id',isAuthenticated, getMockInterview);
+interviewMockRoutes.post('/interviews', isAuthenticated, addMockInterview);
+interviewMockRoutes.put('/interviews/:id', isAuthenticated, updateMockInterview);
+interviewMockRoutes.delete('/interviews/:id', isAuthenticated, removeMockInterview);
 
 export { interviewRoutes, interviewMockRoutes };

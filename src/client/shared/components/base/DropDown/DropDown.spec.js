@@ -10,7 +10,7 @@ const items = [ 'text1', 'text2', 'text3' ];
 const value = 'value';
 const customFunction = jest.fn();
 
-describe('<DropDown />', () => {
+describe('shared/components/base/DropDown', () => {
   it('should render a dropdown, dropdown button, dropdown button text, dropdown items class', () => {
     const wrapper = mount(<DropDown items={items} value={value} onClick={customFunction} />);
     expect(wrapper.find('.dropdown')).toHaveLength(1);

@@ -1,8 +1,10 @@
 import React from 'react';
-import { createStore, compose, applyMiddleware } from 'redux';
 import { render } from 'react-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import createBrowserHistory from 'history/createBrowserHistory';
 
 import { rootReducers as reducers, rootSaga, rootRoutes as routes } from './root';
 
@@ -12,8 +14,16 @@ const history = createBrowserHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+
 const store = createStore(
-  reducers,
+  persistedReducer,
   compose(
     applyMiddleware(sagaMiddleware),
     typeof window !== 'undefined' &&
@@ -21,9 +31,16 @@ const store = createStore(
   ),
 );
 
+const persistor = persistStore(store);
+
 sagaMiddleware.run(rootSaga);
 
 render(
-  <Root routes={routes} store={store} history={history} />,
+  <Root
+    routes={routes}
+    store={store}
+    history={history}
+    persistor={persistor}
+  />,
   document.getElementById('root'),
 );

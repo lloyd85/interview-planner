@@ -17,7 +17,7 @@ class InterviewPage extends Component {
     // props
     data: oneOfType([array, object]).isRequired,
     isLoading: bool.isRequired,
-    status: string.isRequired,
+    message: string.isRequired,
     match: object.isRequired,
 
     fetchInterview: func.isRequired,
@@ -77,7 +77,7 @@ class InterviewPage extends Component {
   }
 
   render() {
-    const { isLoading, data, status } = this.props;
+    const { isLoading, data, message } = this.props;
     const { editMode, role, company } = this.state;
     const validator = new FormValidator();
     const existsData = typeof data === 'object';
@@ -125,7 +125,7 @@ class InterviewPage extends Component {
           />
           }
         </ContentLoader>
-        { status === 'SUCCESS' && <Redirect to="/interviews" /> }
+        { message === 'Interview successfully deleted' && <Redirect to="/interviews" /> }
       </PageBaseLayout>
     );
   }

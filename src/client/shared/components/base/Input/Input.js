@@ -41,8 +41,9 @@ class Input extends Component {
     const { isValid, value } = nextProps;
 
     if (value.length > 0) {
-      this.setState({ isValid });
+      return this.setState({ isValid });
     }
+    return this.setState({ value });
   }
 
   onChange({ target }) {

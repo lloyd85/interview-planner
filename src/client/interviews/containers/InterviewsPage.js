@@ -9,6 +9,7 @@ import InterviewsActions from '../actions';
 import InterviewsSelectors from '../selectors';
 
 import { InterviewList, InterviewsAddForm } from '../components';
+import { LogoutButton } from '../../auth/containers';
 
 @connect(InterviewsSelectors, InterviewsActions)
 class InterviewPage extends Component {
@@ -17,7 +18,7 @@ class InterviewPage extends Component {
     data: oneOfType([object, array]).isRequired,
     isLoading: bool.isRequired,
 
-    // methods
+    // actions
     fetchInterviews: func.isRequired,
     addInterview: func.isRequired,
     removeInterview: func.isRequired,
@@ -52,6 +53,7 @@ class InterviewPage extends Component {
 
     return (
       <PageBaseLayout name="interviews">
+        <LogoutButton />
         <InterviewsAddForm
           values={this.state}
           onInputChange={this.onInputChange.bind(this)}

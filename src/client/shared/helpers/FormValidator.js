@@ -29,9 +29,13 @@ export default class FormValidator {
     return isDigits;
   }
 
-  existValues(values) {
-    this.values = values.every(value => value.length > 0);
-    return this.values;
+  addRequiredValues(values) {
+    const newValues = this.values.concat(values);
+    this.values = newValues;
+  }
+
+  existValues() {
+    return this.values.every(value => value.length > 0);
   }
 
   validate() {
